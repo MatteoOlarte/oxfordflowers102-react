@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { LayersModel, loadLayersModel, browser, scalar, Tensor, string } from "@tensorflow/tfjs";
+import { LayersModel, loadLayersModel, browser, scalar, Tensor } from "@tensorflow/tfjs";
 import classnames from "../models/classnames";
 
 interface IHomePageContext {

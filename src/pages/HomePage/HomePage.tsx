@@ -11,7 +11,7 @@ function HomePage() {
 		if (!context) return;
 
 		if (imgRef.current) {
-			const result = await context.predict(imgRef.current);
+			await context.predict(imgRef.current);
 			setPrediction(1);
 		}
 	};
