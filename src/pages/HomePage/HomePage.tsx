@@ -12,7 +12,7 @@ function HomePage() {
 
 		if (imgRef.current) {
 			const result = await context.predict(imgRef.current);
-			setPrediction(result);
+			setPrediction(1);
 		}
 	};
 
@@ -64,7 +64,8 @@ function HomePage() {
 							{prediction && (
 								<div className="mt-4">
 									<h5 className="text-center">Resultado de la Predicción:</h5>
-									<p className="text-center">{JSON.stringify(prediction)}</p>
+									<p className="text-center">{context?.classname}</p>
+                  <p className="text-center">{context?.proability.toFixed(2)}%</p>
 								</div>
 							)}
 						</div>

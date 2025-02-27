@@ -1,16 +1,20 @@
 import React, { createContext, useState, useEffect } from "react";
-import { LayersModel, loadLayersModel, browser, scalar, Tensor } from "@tensorflow/tfjs";
+import { LayersModel, loadLayersModel, browser, scalar, Tensor, string } from "@tensorflow/tfjs";
 import classnames from "../models/classnames";
 
 interface IHomePageContext {
+	classname?: string;
+	proability: number
 	loadModel: () => Promise<void>;
-	predict: (image: HTMLImageElement) => Promise<string | null>;
+	predict: (image: HTMLImageElement) => Promise<void>;
 }
 
 export const HomePageContext = createContext<IHomePageContext | null>(null);
 
 export const HomePageProvider = ({ children }: React.PropsWithChildren) => {
 	const [model, setModel] = useState<LayersModel | null>(null);
+	const [classname, setClassname] = useState<string>()
+	const [proability, setProability] = useState<number>(0)
 
 	const loadModel = async () => {
 		try {
@@ -25,7 +29,7 @@ export const HomePageProvider = ({ children }: React.PropsWithChildren) => {
 	const predict = async (image: HTMLImageElement) => {
 		if (!model) {
 			console.error("El modelo no está cargado.");
-			return null;
+			return;
 		}
 
 		const tensor = browser
@@ -36,13 +40,16 @@ export const HomePageProvider = ({ children }: React.PropsWithChildren) => {
 			.div(scalar(255));
 		const prediction = (await model.predict(tensor)) as Tensor;
 		const predictedClassIndex = prediction.argMax(-1).dataSync()[0];
+		const predictedClassProbability = prediction.dataSync()[predictedClassIndex];
+		const predictedClassPercentage = predictedClassProbability * 100;
 
-		return classnames[predictedClassIndex];
+		setClassname(classnames[predictedClassIndex])
+		setProability(predictedClassPercentage)
 	};
 
 	useEffect(() => {
 		loadModel();
 	}, []);
 
-	return <HomePageContext value={{ loadModel, predict }}>{children}</HomePageContext>;
+	return <HomePageContext value={{ loadModel, predict, proability, classname }}>{children}</HomePageContext>;
 };
