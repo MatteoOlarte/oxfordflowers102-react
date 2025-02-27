@@ -1,5 +1,6 @@
 {
   "name": "oxfordflowers102-react",
+  "homepage": "https://matteoolarte.github.oi/oxfordflowers102-react/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,10 +8,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@tensorflow/tfjs": "^4.22.0",
+    "gh-pages": "^6.3.0",
     "install": "^0.13.0",
     "npm": "^11.1.0",
     "react": "^19.0.0",
